@@ -5,10 +5,10 @@ ENV H5AI_VERSION 0.29.0
 ENV HTTPD_USER www-data
 
 RUN apt-get update && apt-get install -y \
-  nginx php5-fpm supervisor \
+  nginx php7.0-fpm supervisor \
   wget unzip patch acl \
   libav-tools imagemagick \
-  graphicsmagick zip unzip php5-gd
+  graphicsmagick zip unzip php7.0-gd
 
 # install h5ai and patch configuration
 RUN wget http://release.larsjung.de/h5ai/h5ai-$H5AI_VERSION.zip
@@ -24,6 +24,7 @@ RUN chown ${HTTPD_USER} /usr/share/h5ai/_h5ai/public/cache/
 RUN chown ${HTTPD_USER} /usr/share/h5ai/_h5ai/private/cache/
 
 # use supervisor to monitor all services
+RUN mkdir -p /var/run/php
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
